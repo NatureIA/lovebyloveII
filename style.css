@@ -1,0 +1,14 @@
+
+html,body{margin:0;height:100%;overflow-x:hidden;background:#0d0018;color:#fff;font-family:system-ui}
+#bg{position:fixed;inset:0;z-index:-2}
+.fullscreen{position:fixed;inset:0;background:#000;display:flex;align-items:center;justify-content:center;animation:fade 4s forwards;z-index:5}
+.introText{font-size:clamp(2rem,5vw,4rem);animation:pulse 2s infinite}
+#hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+#heart{font-size:120px;animation:beat 1s infinite;cursor:pointer;filter:drop-shadow(0 0 20px #ff4d9d)}
+button{padding:16px 30px;border-radius:40px;border:none;background:#ff4d9d;color:#fff;font-size:18px;cursor:pointer}
+.placeholder{padding:80px 20px}
+.heart{position:fixed;color:#ff5ca8;pointer-events:none;animation:fly 3s linear forwards}
+@keyframes beat{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
+@keyframes pulse{50%{opacity:.4}}
+@keyframes fade{0%,70%{opacity:1}100%{opacity:0;visibility:hidden}}
+@keyframes fly{from{transform:translate(0,0) scale(1)}to{transform:translate(var(--x),-120vh) scale(.2);opacity:0}}
