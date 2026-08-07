@@ -1,12 +1,15 @@
 const start = new Date('2026-06-12T00:00:00');
 
 const timer = document.getElementById('timer');
+const play = document.getElementById('play');
+const audio = document.getElementById('audio');
 const slide = document.getElementById('slide');
 const typed = document.getElementById('typed');
 const centralHeart = document.getElementById('centralHeart');
+const musicLabel = document.getElementById('musicLabel');
 const fotoStatus = document.getElementById('fotoStatus');
 
-// ==+======== TIMER ==========
+// ========== TIMER ==========
 function tick() {
   const now = new Date();
   let diff = now - start;
@@ -61,6 +64,39 @@ function explodeHearts(x, y, amount = 90) {
   }
 }
 
+// ========== MÚSICA ==========
+let musicaIniciada = false;
+
+function iniciarMusica() {
+  if (musicaIniciada) {
+    // Se já estiver tocando, não faz nada (ou pode pausar se quiser)
+    return;
+  }
+
+  audio.volume = 1.0;
+  audio.muted = false;
+  audio.play()
+    .then(() => {
+      musicaIniciada = true;
+      play.textContent = '♫ Música Tocando';
+      musicLabel.textContent = '🎵 Sunshine - Delacruz • tocando';
+    })
+    .catch((error) => {
+      console.error('Erro ao tocar:', error);
+      musicaIniciada = false;
+      play.textContent = '▶ Nossa Música';
+      musicLabel.textContent = 'Erro ao tocar música';
+      alert('Clique novamente para tocar a música.');
+    });
+}
+
+// ========== BOTÃO PLAY ==========
+play.addEventListener('click', (event) => {
+  event.preventDefault();
+  event.stopPropagation();
+  iniciarMusica();
+});
+
 // ========== CORAÇÃO CENTRAL ==========
 centralHeart.addEventListener('click', (event) => {
   const rect = centralHeart.getBoundingClientRect();
@@ -72,6 +108,7 @@ centralHeart.addEventListener('click', (event) => {
   centralHeart.classList.add('clicked');
 
   explodeHearts(x, y, 110);
+  iniciarMusica(); // também inicia a música
 });
 
 // ========== GALERIA DE FOTOS ==========
@@ -132,7 +169,7 @@ carregarPrimeiraImagem().then((idx) => {
   }
 });
 
-// ========== CARTA COM EFEITO DE DIGITAÇÃO ==========
+// ========== CARTA ==========
 const text = 'Esta é uma carta provisória. Quando você me enviar a carta verdadeira, ela será substituída por completo com efeito de digitação.';
 let pos = 0;
 function type() {
