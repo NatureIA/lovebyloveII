@@ -1,140 +1,59 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
-
-<meta charset="UTF-8">
-
-<meta name="viewport" content="width=device-width,initial-scale=1">
-
-<title>Victor ❤️ Lara</title>
-
-<link rel="stylesheet" href="style.css">
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Victor ❤️ Lara</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
+  <div id="hearts"></div>
 
-<div id="hearts"></div>
+  <section class="hero">
+    <h1>Victor ❤️ Lara</h1>
+    <h2>Tudo mudou quando você chegou!</h2>
 
+    <div class="central-heart-area">
+      <button id="centralHeart" class="central-heart" type="button" aria-label="Tocar música e espalhar corações">
+        <span>❤</span>
+      </button>
+    </div>
 
-<section class="hero">
+    <button id="play" type="button">▶ Nossa Música</button>
+    <div id="musicLabel" class="music-label">Dunshine - Delacruz</div>
 
-<h1>Victor ❤️ Lara</h1>
+    <audio id="audio" loop preload="auto">
+      <source src="assets/musica/musica.mp3" type="audio/mpeg" />
+    </audio>
+  </section>
 
-<h2>Tudo mudou quando você chegou!</h2>
+  <section class="counter">
+    <h3>Tempo juntos</h3>
+    <div id="timer"></div>
+  </section>
 
+  <section class="gallery">
+    <h3>Nossos Momentos</h3>
+    <img id="slide" src="https://placehold.co/900x600/png?text=Carregando..." alt="Nossos momentos" />
+    <p>Substitua pelas fotos de vocês depois.</p>
+  </section>
 
-<div class="central-heart-area">
+  <section class="timeline">
+    <h3>Nossa História</h3>
+    <div class="card">💖 Primeiro encontro (exemplo)</div>
+    <div class="card">🌹 Primeiro beijo (exemplo)</div>
+    <div class="card">✨ Pedido de namoro (exemplo)</div>
+  </section>
 
-<button
-id="centralHeart"
-class="central-heart"
-type="button"
-aria-label="Tocar música e espalhar corações"
->
+  <section class="letter">
+    <h3>Para o meu amor</h3>
+    <p id="typed"></p>
+  </section>
 
-<span>❤</span>
+  <section class="end">
+    <h2>O melhor capítulo da minha vida ainda está sendo escrito... ao seu lado.</h2>
+  </section>
 
-</button>
-
-</div>
-
-
-<button id="play" type="button">
-▶ Nossa Música
-</button>
-
-
-<div
-id="musicLabel"
-class="music-label"
->
-Dunshine - Delacruz
-</div>
-
-
-<audio
-id="audio"
-loop
-preload="auto"
->
-
-<source
-src="assets/musica/musica.mp3"
-type="audio/mpeg"
->
-
-</audio>
-
-</section>
-
-
-<section class="counter">
-
-<h3>Tempo juntos</h3>
-
-<div id="timer"></div>
-
-</section>
-
-
-<section class="gallery">
-
-<h3>Nossos Momentos</h3>
-
-<img
-id="slide"
-src="https://placehold.co/900x600/png?text=Foto+1"
-alt="Nossos momentos"
->
-
-<p>
-Substitua pelas fotos de vocês depois.
-</p>
-
-</section>
-
-
-<section class="timeline">
-
-<h3>Nossa História</h3>
-
-<div class="card">
-💖 Primeiro encontro (exemplo)
-</div>
-
-<div class="card">
-🌹 Primeiro beijo (exemplo)
-</div>
-
-<div class="card">
-✨ Pedido de namoro (exemplo)
-</div>
-
-</section>
-
-
-<section class="letter">
-
-<h3>Para o meu amor</h3>
-
-<p id="typed"></p>
-
-</section>
-
-
-<section class="end">
-
-<h2>
-O melhor capítulo da minha vida ainda está sendo escrito... ao seu lado.
-</h2>
-
-</section>
-
-
-<script src="script.js"></script>
-
+  <script src="script.js"></script>
 </body>
-
 </html>
