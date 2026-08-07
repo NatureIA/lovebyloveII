@@ -83,9 +83,12 @@ audio.play().then(()=>{
 play.textContent='⏸ Pausar Música';
 musicLabel.textContent='Dunshine - Delacruz • tocando';
 }).catch((error)=>{
-console.error('Erro ao reproduzir música:',error);
+console.error('Erro ao reproduzir música:', error);
+
 play.textContent='▶ Tentar novamente';
-musicLabel.textContent='Não foi possível reproduzir a música';
+
+musicLabel.textContent=
+`Erro: ${error.name} - ${error.message}`;
 });
 }
 
