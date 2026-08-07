@@ -23,6 +23,7 @@ setInterval(tick,1000);
 tick();
 
 function createFloatingHeart(initial=false){
+
 const h=document.createElement('div');
 
 h.className='heart';
@@ -39,6 +40,7 @@ h.style.bottom=(-30+Math.random()*innerHeight)+'px';
 document.body.appendChild(h);
 
 setTimeout(()=>h.remove(),11000);
+
 }
 
 function explodeHearts(x,y,amount=90){
@@ -57,13 +59,23 @@ for(let i=0;i<amount;i++){
 const heart=document.createElement('span');
 
 heart.className='burst-heart';
+
 heart.textContent=Math.random()>.12?'❤':'♥';
 
 const angle=Math.random()*Math.PI*2;
-const distance=75+Math.random()*Math.min(innerWidth,470);
 
-heart.style.setProperty('--start-x',`${x}px`);
-heart.style.setProperty('--start-y',`${y}px`);
+const distance=
+75+Math.random()*Math.min(innerWidth,470);
+
+heart.style.setProperty(
+'--start-x',
+`${x}px`
+);
+
+heart.style.setProperty(
+'--start-y',
+`${y}px`
+);
 
 heart.style.setProperty(
 '--move-x',
@@ -97,13 +109,22 @@ heart.style.setProperty(
 
 heart.style.setProperty(
 '--heart-color',
-colors[Math.floor(Math.random()*colors.length)]
+colors[
+Math.floor(
+Math.random()*colors.length
+)
+]
 );
 
 document.body.appendChild(heart);
 
-setTimeout(()=>heart.remove(),2200);
+setTimeout(
+()=>heart.remove(),
+2200
+);
+
 }
+
 }
 
 
@@ -111,80 +132,27 @@ setTimeout(()=>heart.remove(),2200);
 /* PLAYER DE MÚSICA              */
 /* ============================= */
 
-let musicStarting=false;
 
-async function playMusicAndAnimate(event){
-
-const rect=centralHeart.getBoundingClientRect();
-
-const x=
-event?.clientX ??
-rect.left+rect.width/2;
-
-const y=
-event?.clientY ??
-rect.top+rect.height/2;
-
-
-/* animação do coração */
-
-centralHeart.classList.remove('clicked');
-
-void centralHeart.offsetWidth;
-
-centralHeart.classList.add('clicked');
-
-explodeHearts(x,y,110);
-
-
-/*
-Impede uma segunda tentativa de reprodução
-enquanto play() ainda está sendo processado.
-*/
-
-if(musicStarting){
-return;
-}
-
-
-/*
-Se já estiver tocando, apenas mantém a música.
-O coração continua executando sua animação.
-*/
-
-if(!audio.paused){
-return;
-}
-
-
-musicStarting=true;
+async function iniciarMusica(){
 
 try{
 
 audio.muted=false;
+
 audio.volume=1;
-
-
-/*
-IMPORTANTE:
-não usamos audio.load() aqui.
-Executar load() enquanto play() está pendente
-também pode provocar AbortError.
-*/
 
 await audio.play();
 
-
-play.textContent='⏸ Pausar Música';
+play.textContent=
+'⏸ Pausar Música';
 
 musicLabel.textContent=
 'Dunshine - Delacruz • tocando';
 
-
 }catch(error){
 
 console.error(
-'Erro ao reproduzir música:',
+'ERRO AO REPRODUZIR ÁUDIO:',
 error
 );
 
@@ -194,50 +162,89 @@ play.textContent=
 musicLabel.textContent=
 `Erro: ${error.name} - ${error.message}`;
 
-}finally{
-
-musicStarting=false;
-
 }
 
 }
 
 
-/* clique no coração central */
+/* ============================= */
+/* CORAÇÃO CENTRAL               */
+/* ============================= */
+
 
 centralHeart.addEventListener(
 'click',
-async (event)=>{
+(event)=>{
 
-await playMusicAndAnimate(event);
+const rect=
+centralHeart.getBoundingClientRect();
+
+const x=
+event.clientX ||
+rect.left+rect.width/2;
+
+const y=
+event.clientY ||
+rect.top+rect.height/2;
+
+
+/* animação */
+
+centralHeart.classList.remove(
+'clicked'
+);
+
+void centralHeart.offsetWidth;
+
+centralHeart.classList.add(
+'clicked'
+);
+
+explodeHearts(
+x,
+y,
+110
+);
+
+
+/* inicia música */
+
+if(audio.paused){
+
+iniciarMusica();
+
+}
 
 }
 );
 
 
-/* botão da música */
+/* ============================= */
+/* BOTÃO DA MÚSICA               */
+/* ============================= */
+
 
 play.addEventListener(
 'click',
 async (event)=>{
 
 event.preventDefault();
+
 event.stopPropagation();
 
 
-/*
-Enquanto play() ainda estiver iniciando,
-o botão não pode executar pause().
-*/
+/* se estiver parada */
 
-if(musicStarting){
+if(audio.paused){
+
+await iniciarMusica();
+
 return;
+
 }
 
 
-/* música já tocando */
-
-if(!audio.paused){
+/* se estiver tocando */
 
 audio.pause();
 
@@ -247,14 +254,70 @@ play.textContent=
 musicLabel.textContent=
 'Dunshine - Delacruz • pausada';
 
-return;
+}
+);
+
+
+/* ============================= */
+/* EVENTOS DO ÁUDIO              */
+/* ============================= */
+
+
+audio.addEventListener(
+'playing',
+()=>{
+
+play.textContent=
+'⏸ Pausar Música';
+
+musicLabel.textContent=
+'Dunshine - Delacruz • tocando';
+
+}
+);
+
+
+audio.addEventListener(
+'pause',
+()=>{
+
+if(!audio.ended){
+
+play.textContent=
+'▶ Nossa Música';
+
+musicLabel.textContent=
+'Dunshine - Delacruz • pausada';
 
 }
 
+}
+);
 
-/* música parada */
 
-await playMusicAndAnimate(event);
+audio.addEventListener(
+'error',
+()=>{
+
+console.error(
+'ERRO INTERNO DO ELEMENTO AUDIO:',
+audio.error
+);
+
+play.textContent=
+'▶ Tentar novamente';
+
+if(audio.error){
+
+musicLabel.textContent=
+`Erro do áudio: código ${audio.error.code}`;
+
+}else{
+
+musicLabel.textContent=
+'Erro ao carregar a música';
+
+}
 
 }
 );
@@ -264,6 +327,7 @@ await playMusicAndAnimate(event);
 /* FOTOS                         */
 /* ============================= */
 
+
 const imgs=[
 'https://placehold.co/900x600/png?text=Foto+1',
 'https://placehold.co/900x600/png?text=Foto+2',
@@ -272,18 +336,24 @@ const imgs=[
 
 let i=0;
 
-setInterval(()=>{
+setInterval(
+()=>{
 
-i=(i+1)%imgs.length;
+i=
+(i+1)%imgs.length;
 
-slide.src=imgs[i];
+slide.src=
+imgs[i];
 
-},4000);
+},
+4000
+);
 
 
 /* ============================= */
 /* CARTA                         */
 /* ============================= */
+
 
 const text=
 'Esta é uma carta provisória. Quando você me enviar a carta verdadeira, ela será substituída por completo com efeito de digitação.';
@@ -294,9 +364,13 @@ function type(){
 
 if(p<text.length){
 
-typed.textContent+=text[p++];
+typed.textContent+=
+text[p++];
 
-setTimeout(type,35);
+setTimeout(
+type,
+35
+);
 
 }
 
@@ -336,7 +410,8 @@ window.addEventListener(
 'load',
 ()=>{
 
-setTimeout(()=>{
+setTimeout(
+()=>{
 
 const rect=
 centralHeart.getBoundingClientRect();
@@ -347,7 +422,9 @@ rect.top+rect.height/2,
 55
 );
 
-},500);
+},
+500
+);
 
 }
 );
