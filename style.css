@@ -23,14 +23,3 @@ button{padding:14px 28px;border:none;border-radius:40px;background:#ff4d88;color
 @keyframes heartPulseRing{0%{transform:scale(.72);opacity:.65}100%{transform:scale(1.55);opacity:0}}
 @keyframes heartExplosion{0%{transform:translate(-50%,-50%) scale(.15) rotate(0deg);opacity:0}12%{opacity:1}100%{transform:translate(calc(-50% + var(--move-x)),calc(-50% + var(--move-y))) scale(var(--scale,1)) rotate(var(--rotation,180deg));opacity:0}}
 @media(max-width:600px){.central-heart{width:96px;height:96px;min-width:96px;min-height:96px}.central-heart span{font-size:51px}}
-
-/* Player de áudio */
-.audio-player {
-  max-width: 400px;
-  margin: 10px auto 0;
-}
-.audio-player audio {
-  width: 100%;
-  border-radius: 30px;
-  box-shadow: 0 4px 15px rgba(255, 77, 136, 0.3);
-}
