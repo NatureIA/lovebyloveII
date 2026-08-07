@@ -9,141 +9,17 @@ button{padding:14px 28px;border:none;border-radius:40px;background:#ff4d88;color
 .heart{position:fixed;color:#ff4d88;animation:up 8s linear forwards}
 @keyframes up{from{transform:translateY(100vh)}to{transform:translateY(-20vh)}}
 
-
-/* ADIÇÕES SOLICITADAS — layout original preservado */
-.central-heart-area{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  margin:18px 0 20px;
-}
-
-.central-heart{
-  width:108px;
-  height:108px;
-  min-width:108px;
-  min-height:108px;
-  padding:0;
-  border:none;
-  border-radius:50%;
-  display:grid;
-  place-items:center;
-  background:radial-gradient(circle at 35% 28%,#ffffff 0 7%,transparent 8%),
-             radial-gradient(circle at 50% 45%,#ff7eac,#ff4d88 68%,#e7286d);
-  box-shadow:
-    0 0 0 10px rgba(255,77,136,.08),
-    0 0 28px rgba(255,77,136,.55),
-    0 14px 28px rgba(175,36,92,.28);
-  cursor:pointer;
-  position:relative;
-  overflow:visible;
-  animation:centralHeartBeat 1.08s ease-in-out infinite;
-}
-
-.central-heart::before,
-.central-heart::after{
-  content:"";
-  position:absolute;
-  inset:-13px;
-  border:2px solid rgba(255,77,136,.28);
-  border-radius:50%;
-  animation:heartPulseRing 2s ease-out infinite;
-}
-
-.central-heart::after{
-  animation-delay:1s;
-}
-
-.central-heart span{
-  color:#fff;
-  font-size:58px;
-  line-height:1;
-  filter:drop-shadow(0 4px 7px rgba(120,0,46,.25));
-}
-
-.central-heart.clicked{
-  animation:centralHeartClick .5s ease;
-}
-
-.music-label{
-  margin-top:10px;
-  font-size:.95rem;
-  font-weight:700;
-  color:#9f3b62;
-}
-
-.heart{
-  position:fixed;
-  bottom:-60px;
-  z-index:9998;
-  color:#ff4d88;
-  opacity:.78;
-  text-shadow:0 0 10px rgba(255,77,136,.38);
-  animation:up 8s linear forwards;
-  pointer-events:none;
-  will-change:transform,opacity;
-}
-
-.burst-heart{
-  position:fixed;
-  left:var(--start-x);
-  top:var(--start-y);
-  z-index:9999;
-  pointer-events:none;
-  color:var(--heart-color,#ff4d88);
-  font-size:var(--heart-size,22px);
-  filter:drop-shadow(0 0 8px rgba(255,77,136,.42));
-  animation:heartExplosion var(--duration,1700ms) cubic-bezier(.18,.75,.28,1) forwards;
-  will-change:transform,opacity;
-}
-
-@keyframes centralHeartBeat{
-  0%,100%{transform:scale(1)}
-  12%{transform:scale(1.13)}
-  24%{transform:scale(.98)}
-  36%{transform:scale(1.10)}
-  54%{transform:scale(1)}
-}
-
-@keyframes centralHeartClick{
-  0%{transform:scale(1)}
-  35%{transform:scale(.78)}
-  70%{transform:scale(1.23)}
-  100%{transform:scale(1)}
-}
-
-@keyframes heartPulseRing{
-  0%{transform:scale(.72);opacity:.65}
-  100%{transform:scale(1.55);opacity:0}
-}
-
-@keyframes heartExplosion{
-  0%{
-    transform:translate(-50%,-50%) scale(.15) rotate(0deg);
-    opacity:0;
-  }
-  12%{opacity:1}
-  100%{
-    transform:
-      translate(
-        calc(-50% + var(--move-x)),
-        calc(-50% + var(--move-y))
-      )
-      scale(var(--scale,1))
-      rotate(var(--rotation,180deg));
-    opacity:0;
-  }
-}
-
-@media(max-width:600px){
-  .central-heart{
-    width:96px;
-    height:96px;
-    min-width:96px;
-    min-height:96px;
-  }
-
-  .central-heart span{
-    font-size:51px;
-  }
-}
+.central-heart-area{display:flex;justify-content:center;align-items:center;margin:18px 0 20px}
+.central-heart{width:108px;height:108px;min-width:108px;min-height:108px;padding:0;border:none;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 35% 28%,#ffffff 0 7%,transparent 8%),radial-gradient(circle at 50% 45%,#ff7eac,#ff4d88 68%,#e7286d);box-shadow:0 0 0 10px rgba(255,77,136,.08),0 0 28px rgba(255,77,136,.55),0 14px 28px rgba(175,36,92,.28);cursor:pointer;position:relative;overflow:visible;animation:centralHeartBeat 1.08s ease-in-out infinite}
+.central-heart::before,.central-heart::after{content:"";position:absolute;inset:-13px;border:2px solid rgba(255,77,136,.28);border-radius:50%;animation:heartPulseRing 2s ease-out infinite}
+.central-heart::after{animation-delay:1s}
+.central-heart span{color:#fff;font-size:58px;line-height:1;filter:drop-shadow(0 4px 7px rgba(120,0,46,.25))}
+.central-heart.clicked{animation:centralHeartClick .5s ease}
+.music-label{margin-top:10px;font-size:.95rem;font-weight:700;color:#9f3b62}
+.heart{position:fixed;bottom:-60px;z-index:9998;color:#ff4d88;opacity:.78;text-shadow:0 0 10px rgba(255,77,136,.38);animation:up 8s linear forwards;pointer-events:none;will-change:transform,opacity}
+.burst-heart{position:fixed;left:var(--start-x);top:var(--start-y);z-index:9999;pointer-events:none;color:var(--heart-color,#ff4d88);font-size:var(--heart-size,22px);filter:drop-shadow(0 0 8px rgba(255,77,136,.42));animation:heartExplosion var(--duration,1700ms) cubic-bezier(.18,.75,.28,1) forwards;will-change:transform,opacity}
+@keyframes centralHeartBeat{0%,100%{transform:scale(1)}12%{transform:scale(1.13)}24%{transform:scale(.98)}36%{transform:scale(1.10)}54%{transform:scale(1)}}
+@keyframes centralHeartClick{0%{transform:scale(1)}35%{transform:scale(.78)}70%{transform:scale(1.23)}100%{transform:scale(1)}}
+@keyframes heartPulseRing{0%{transform:scale(.72);opacity:.65}100%{transform:scale(1.55);opacity:0}}
+@keyframes heartExplosion{0%{transform:translate(-50%,-50%) scale(.15) rotate(0deg);opacity:0}12%{opacity:1}100%{transform:translate(calc(-50% + var(--move-x)),calc(-50% + var(--move-y))) scale(var(--scale,1)) rotate(var(--rotation,180deg));opacity:0}}
+@media(max-width:600px){.central-heart{width:96px;height:96px;min-width:96px;min-height:96px}.central-heart span{font-size:51px}}
