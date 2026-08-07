@@ -92,16 +92,22 @@ musicLabel.textContent=
 });
 }
 
-centralHeart.addEventListener('click',playMusicAndAnimate);
+centralHeart.addEventListener('click',(event)=>{
+playMusicAndAnimate(event);
+});
 
 play.addEventListener('click',(event)=>{
+event.preventDefault();
+event.stopPropagation();
+
 if(audio.paused){
 playMusicAndAnimate(event);
-}else{
+return;
+}
+
 audio.pause();
 play.textContent='▶ Nossa Música';
 musicLabel.textContent='Dunshine - Delacruz • pausada';
-}
 });
 
 const imgs=[
