@@ -9,6 +9,7 @@ button{padding:14px 28px;border:none;border-radius:40px;background:#ff4d88;color
 .heart{position:fixed;color:#ff4d88;animation:up 8s linear forwards}
 @keyframes up{from{transform:translateY(100vh)}to{transform:translateY(-20vh)}}
 
+
 .central-heart-area{display:flex;justify-content:center;align-items:center;margin:18px 0 20px}
 .central-heart{width:108px;height:108px;min-width:108px;min-height:108px;padding:0;border:none;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 35% 28%,#ffffff 0 7%,transparent 8%),radial-gradient(circle at 50% 45%,#ff7eac,#ff4d88 68%,#e7286d);box-shadow:0 0 0 10px rgba(255,77,136,.08),0 0 28px rgba(255,77,136,.55),0 14px 28px rgba(175,36,92,.28);cursor:pointer;position:relative;overflow:visible;animation:centralHeartBeat 1.08s ease-in-out infinite}
 .central-heart::before,.central-heart::after{content:"";position:absolute;inset:-13px;border:2px solid rgba(255,77,136,.28);border-radius:50%;animation:heartPulseRing 2s ease-out infinite}
