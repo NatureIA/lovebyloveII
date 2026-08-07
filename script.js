@@ -7,6 +7,7 @@ const slide = document.getElementById('slide');
 const typed = document.getElementById('typed');
 const centralHeart = document.getElementById('centralHeart');
 const musicLabel = document.getElementById('musicLabel');
+const fotoStatus = document.getElementById('fotoStatus');
 
 // ========== TIMER ==========
 function tick() {
@@ -67,25 +68,32 @@ function explodeHearts(x, y, amount = 90) {
 let musicaIniciada = false;
 
 async function iniciarMusica() {
-  if (musicaIniciada) return;
+  if (musicaIniciada) {
+    console.log('Música já está tocando.');
+    return;
+  }
 
   try {
+    console.log('Tentando tocar música...');
     audio.muted = false;
     audio.volume = 1.0;
     await audio.play();
     musicaIniciada = true;
     play.textContent = '♫ Música Tocando';
     musicLabel.textContent = 'Dunshine - Delacruz • tocando';
+    console.log('Música tocando com sucesso!');
   } catch (error) {
     musicaIniciada = false;
     console.error('ERRO AO REPRODUZIR ÁUDIO:', error);
     play.textContent = '▶ Tocar Música';
     musicLabel.textContent = `Erro: ${error.name} - ${error.message}`;
+    // Fallback: tenta novamente com um clique
+    alert('Clique novamente para tentar tocar a música.');
   }
 }
 
-// Evento de erro do áudio (fallback)
-audio.addEventListener('error', () => {
+// Evento de erro do áudio
+audio.addEventListener('error', (e) => {
   musicaIniciada = false;
   console.error('ERRO NO ELEMENTO ÁUDIO:', audio.error);
   play.textContent = '▶ Tocar Música';
@@ -96,11 +104,12 @@ audio.addEventListener('error', () => {
   }
 });
 
-// Quando a música começar a tocar de fato
+// Quando a música começar a tocar
 audio.addEventListener('playing', () => {
   musicaIniciada = true;
   play.textContent = '♫ Música Tocando';
   musicLabel.textContent = 'Dunshine - Delacruz • tocando';
+  console.log('Evento "playing" disparado.');
 });
 
 // ========== CORAÇÃO CENTRAL ==========
@@ -110,7 +119,7 @@ centralHeart.addEventListener('click', (event) => {
   const y = event.clientY || rect.top + rect.height / 2;
 
   centralHeart.classList.remove('clicked');
-  void centralHeart.offsetWidth; // reinicia a animação
+  void centralHeart.offsetWidth;
   centralHeart.classList.add('clicked');
 
   explodeHearts(x, y, 110);
@@ -124,20 +133,72 @@ play.addEventListener('click', (event) => {
   iniciarMusica();
 });
 
-// ========== GALERIA DE FOTOS (CORRIGIDO) ==========
-// Gera automaticamente os caminhos para foto01.png até foto18.png
-const imgs = Array.from({ length: 18 }, (_, i) =>
+// ========== GALERIA DE FOTOS (COM VERIFICAÇÃO) ==========
+const numFotos = 18;
+const imgs = Array.from({ length: numFotos }, (_, i) =>
   `assets/imagens/foto${String(i + 1).padStart(2, '0')}.png`
 );
 
-let idx = 0;
-// Define a primeira imagem imediatamente
-slide.src = imgs[0];
+// Testa se a primeira imagem carrega
+function testarImagem(url) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => resolve(true);
+    img.onerror = () => resolve(false);
+    img.src = url;
+  });
+}
 
-setInterval(() => {
-  idx = (idx + 1) % imgs.length;
-  slide.src = imgs[idx];
-}, 4000);
+// Função para carregar a primeira imagem disponível
+async function carregarPrimeiraImagem() {
+  for (let i = 0; i < imgs.length; i++) {
+    const url = imgs[i];
+    const ok = await testarImagem(url);
+    if (ok) {
+      slide.src = url;
+      fotoStatus.textContent = `Foto ${i+1} de ${numFotos} carregada.`;
+      console.log(`Imagem carregada: ${url}`);
+      return i;
+    } else {
+      console.warn(`Falha ao carregar: ${url}`);
+    }
+  }
+  // Se nenhuma carregar, usa placeholder
+  slide.src = 'https://placehold.co/900x600/png?text=Fotos+n%C3%A3o+encontradas';
+  fotoStatus.textContent = 'Nenhuma foto encontrada em assets/imagens/';
+  console.error('Nenhuma imagem foi carregada.');
+  return -1;
+}
+
+let currentIndex = 0;
+
+// Inicia com a primeira imagem disponível
+carregarPrimeiraImagem().then((idx) => {
+  if (idx >= 0) {
+    currentIndex = idx;
+    // Rotaciona as imagens a partir da primeira encontrada
+    setInterval(() => {
+      // Procura a próxima imagem válida
+      let next = (currentIndex + 1) % imgs.length;
+      // Tenta carregar a próxima (se falhar, pula)
+      const tentar = async () => {
+        for (let i = 0; i < imgs.length; i++) {
+          const index = (next + i) % imgs.length;
+          const url = imgs[index];
+          const ok = await testarImagem(url);
+          if (ok) {
+            slide.src = url;
+            fotoStatus.textContent = `Foto ${index+1} de ${numFotos}`;
+            currentIndex = index;
+            return;
+          }
+        }
+        // Se nenhuma funcionar, mantém a atual
+      };
+      tentar();
+    }, 4000);
+  }
+});
 
 // ========== CARTA COM EFEITO DE DIGITAÇÃO ==========
 const text = 'Esta é uma carta provisória. Quando você me enviar a carta verdadeira, ela será substituída por completo com efeito de digitação.';
@@ -152,15 +213,11 @@ function type() {
 type();
 
 // ========== INICIALIZAÇÃO DOS CORAÇÕES ==========
-// Corações naturais ao abrir
 for (let n = 0; n < 28; n++) {
   setTimeout(() => createFloatingHeart(true), n * 55);
 }
-
-// Corações contínuos
 setInterval(() => createFloatingHeart(false), 620);
 
-// Pequena explosão inicial suave ao carregar
 window.addEventListener('load', () => {
   setTimeout(() => {
     const rect = centralHeart.getBoundingClientRect();
