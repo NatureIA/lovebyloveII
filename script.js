@@ -1,12 +1,9 @@
 const start = new Date('2026-06-12T00:00:00');
 
 const timer = document.getElementById('timer');
-const play = document.getElementById('play');
-const audio = document.getElementById('audio');
 const slide = document.getElementById('slide');
 const typed = document.getElementById('typed');
 const centralHeart = document.getElementById('centralHeart');
-const musicLabel = document.getElementById('musicLabel');
 const fotoStatus = document.getElementById('fotoStatus');
 
 // ========== TIMER ==========
@@ -64,96 +61,7 @@ function explodeHearts(x, y, amount = 90) {
   }
 }
 
-// ========== MÚSICA - VERSÃO COM DIAGNÓSTICO ==========
-let musicaIniciada = false;
-let audioLoaded = false;
-
-// Verifica se o áudio pode ser reproduzido
-audio.addEventListener('canplaythrough', () => {
-  console.log('✅ Áudio carregado e pronto para tocar.');
-  audioLoaded = true;
-});
-
-// Captura erros de rede
-audio.addEventListener('error', (e) => {
-  console.error('❌ ERRO NO ELEMENTO ÁUDIO:', audio.error);
-  let msg = '';
-  if (audio.error) {
-    switch (audio.error.code) {
-      case 1: msg = 'Carregamento abortado'; break;
-      case 2: msg = 'Erro de rede (arquivo não encontrado?)'; break;
-      case 3: msg = 'Erro de decodificação (formato não suportado)'; break;
-      case 4: msg = 'Arquivo não encontrado (404)'; break;
-      default: msg = `Código ${audio.error.code}`;
-    }
-  }
-  musicLabel.textContent = `Erro: ${msg}`;
-  alert(`❌ Erro no áudio: ${msg}\nVerifique o console para mais detalhes.`);
-  play.textContent = '▶ Tocar Música';
-});
-
-// Mostra quando a música começa a tocar
-audio.addEventListener('playing', () => {
-  console.log('🎵 Música está tocando!');
-  musicaIniciada = true;
-  play.textContent = '♫ Música Tocando';
-  musicLabel.textContent = 'Dunshine - Delacruz • tocando';
-});
-
-// Função principal para iniciar a música
-async function iniciarMusica() {
-  console.log('🔄 iniciarMusica() chamada.');
-  if (musicaIniciada) {
-    console.log('ℹ️ Música já está tocando.');
-    return;
-  }
-
-  // Verifica se o arquivo existe via fetch (diagnóstico)
-  try {
-    const response = await fetch('assets/musica/musica.mp3', { method: 'HEAD' });
-    if (!response.ok) {
-      console.error(`❌ Arquivo não encontrado (status ${response.status})`);
-      musicLabel.textContent = `Erro: arquivo não encontrado (${response.status})`;
-      alert(`❌ O arquivo musica.mp3 não foi encontrado no servidor.\nStatus: ${response.status}\nVerifique se o arquivo está em assets/musica/.`);
-      return;
-    } else {
-      console.log('✅ Arquivo existe (status 200). Tamanho:', response.headers.get('content-length'));
-    }
-  } catch (fetchError) {
-    console.error('❌ Erro ao verificar arquivo:', fetchError);
-    musicLabel.textContent = 'Erro ao verificar o arquivo';
-    alert('❌ Não foi possível verificar a existência do arquivo. Veja o console.');
-    return;
-  }
-
-  // Tenta reproduzir
-  try {
-    console.log('⏳ Tentando reproduzir áudio...');
-    audio.muted = false;
-    audio.volume = 1.0;
-    await audio.play();
-    console.log('✅ Reprodução iniciada com sucesso.');
-    musicaIniciada = true;
-    play.textContent = '♫ Música Tocando';
-    musicLabel.textContent = 'Dunshine - Delacruz • tocando';
-  } catch (playError) {
-    console.error('❌ Erro ao tentar play():', playError);
-    musicLabel.textContent = `Erro: ${playError.name} - ${playError.message}`;
-    alert(`❌ Falha ao tocar: ${playError.message}\nTente novamente ou verifique o console.`);
-    // Fallback: tenta recarregar o áudio
-    audio.load();
-    setTimeout(() => {
-      console.log('🔄 Tentando novamente após recarregar...');
-      audio.play().then(() => {
-        musicaIniciada = true;
-        play.textContent = '♫ Música Tocando';
-        musicLabel.textContent = 'Dunshine - Delacruz • tocando';
-      }).catch(e => console.error('❌ Nova tentativa falhou:', e));
-    }, 1000);
-  }
-}
-
-// ========== EVENTOS DOS BOTÕES ==========
+// ========== CORAÇÃO CENTRAL ==========
 centralHeart.addEventListener('click', (event) => {
   const rect = centralHeart.getBoundingClientRect();
   const x = event.clientX || rect.left + rect.width / 2;
@@ -164,13 +72,6 @@ centralHeart.addEventListener('click', (event) => {
   centralHeart.classList.add('clicked');
 
   explodeHearts(x, y, 110);
-  iniciarMusica();
-});
-
-play.addEventListener('click', (event) => {
-  event.preventDefault();
-  event.stopPropagation();
-  iniciarMusica();
 });
 
 // ========== GALERIA DE FOTOS ==========
@@ -231,7 +132,7 @@ carregarPrimeiraImagem().then((idx) => {
   }
 });
 
-// ========== CARTA ==========
+// ========== CARTA COM EFEITO DE DIGITAÇÃO ==========
 const text = 'Esta é uma carta provisória. Quando você me enviar a carta verdadeira, ela será substituída por completo com efeito de digitação.';
 let pos = 0;
 function type() {
