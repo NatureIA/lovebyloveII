@@ -14,17 +14,27 @@
     <h2>Tudo mudou quando você chegou!</h2>
 
     <div class="central-heart-area">
-      <button id="centralHeart" class="central-heart" type="button" aria-label="Tocar música e espalhar corações">
+      <button id="centralHeart" class="central-heart" type="button" aria-label="Espalhar corações">
         <span>❤</span>
       </button>
     </div>
 
-    <button id="play" type="button">▶ Nossa Música</button>
-    <div id="musicLabel" class="music-label">Dunshine - Delacruz</div>
+    <!-- Player do Spotify -->
+    <div class="spotify-player">
+      <iframe 
+        data-testid="embed-iframe" 
+        style="border-radius:12px" 
+        src="https://open.spotify.com/embed/track/1oafrgddZOXljJKp5Pjlbc?utm_source=generator&autoplay=1" 
+        width="100%" 
+        height="152" 
+        frameBorder="0" 
+        allowfullscreen="" 
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+        loading="lazy">
+      </iframe>
+    </div>
 
-    <audio id="audio" loop preload="auto">
-      <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg" />
-    </audio>
+    <div id="musicLabel" class="music-label">🎵 Sunshine - Delacruz (Spotify)</div>
   </section>
 
   <section class="counter">
