@@ -40,7 +40,6 @@ h.style.bottom=(-30+Math.random()*innerHeight)+'px';
 document.body.appendChild(h);
 
 setTimeout(()=>h.remove(),11000);
-
 }
 
 function explodeHearts(x,y,amount=90){
@@ -59,7 +58,6 @@ for(let i=0;i<amount;i++){
 const heart=document.createElement('span');
 
 heart.className='burst-heart';
-
 heart.textContent=Math.random()>.12?'❤':'♥';
 
 const angle=Math.random()*Math.PI*2;
@@ -132,24 +130,36 @@ setTimeout(
 /* PLAYER DE MÚSICA              */
 /* ============================= */
 
+let musicaIniciada=false;
 
 async function iniciarMusica(){
+
+if(musicaIniciada){
+return;
+}
 
 try{
 
 audio.muted=false;
-
 audio.volume=1;
 
-await audio.play();
+const tentativa=audio.play();
+
+if(tentativa !== undefined){
+await tentativa;
+}
+
+musicaIniciada=true;
 
 play.textContent=
-'⏸ Pausar Música';
+'♫ Música Tocando';
 
 musicLabel.textContent=
 'Dunshine - Delacruz • tocando';
 
 }catch(error){
+
+musicaIniciada=false;
 
 console.error(
 'ERRO AO REPRODUZIR ÁUDIO:',
@@ -157,7 +167,7 @@ error
 );
 
 play.textContent=
-'▶ Tentar novamente';
+'▶ Tocar Música';
 
 musicLabel.textContent=
 `Erro: ${error.name} - ${error.message}`;
@@ -170,7 +180,6 @@ musicLabel.textContent=
 /* ============================= */
 /* CORAÇÃO CENTRAL               */
 /* ============================= */
-
 
 centralHeart.addEventListener(
 'click',
@@ -207,13 +216,9 @@ y,
 );
 
 
-/* inicia música */
-
-if(audio.paused){
+/* inicia a música */
 
 iniciarMusica();
-
-}
 
 }
 );
@@ -223,36 +228,19 @@ iniciarMusica();
 /* BOTÃO DA MÚSICA               */
 /* ============================= */
 
-
 play.addEventListener(
 'click',
-async (event)=>{
+(event)=>{
 
 event.preventDefault();
-
 event.stopPropagation();
 
+/*
+O botão apenas inicia a música.
+Não existe pause() durante a reprodução.
+*/
 
-/* se estiver parada */
-
-if(audio.paused){
-
-await iniciarMusica();
-
-return;
-
-}
-
-
-/* se estiver tocando */
-
-audio.pause();
-
-play.textContent=
-'▶ Nossa Música';
-
-musicLabel.textContent=
-'Dunshine - Delacruz • pausada';
+iniciarMusica();
 
 }
 );
@@ -262,13 +250,14 @@ musicLabel.textContent=
 /* EVENTOS DO ÁUDIO              */
 /* ============================= */
 
-
 audio.addEventListener(
 'playing',
 ()=>{
 
+musicaIniciada=true;
+
 play.textContent=
-'⏸ Pausar Música';
+'♫ Música Tocando';
 
 musicLabel.textContent=
 'Dunshine - Delacruz • tocando';
@@ -278,26 +267,10 @@ musicLabel.textContent=
 
 
 audio.addEventListener(
-'pause',
-()=>{
-
-if(!audio.ended){
-
-play.textContent=
-'▶ Nossa Música';
-
-musicLabel.textContent=
-'Dunshine - Delacruz • pausada';
-
-}
-
-}
-);
-
-
-audio.addEventListener(
 'error',
 ()=>{
+
+musicaIniciada=false;
 
 console.error(
 'ERRO INTERNO DO ELEMENTO AUDIO:',
@@ -305,7 +278,7 @@ audio.error
 );
 
 play.textContent=
-'▶ Tentar novamente';
+'▶ Tocar Música';
 
 if(audio.error){
 
@@ -326,7 +299,6 @@ musicLabel.textContent=
 /* ============================= */
 /* FOTOS                         */
 /* ============================= */
-
 
 const imgs=[
 'https://placehold.co/900x600/png?text=Foto+1',
@@ -353,7 +325,6 @@ imgs[i];
 /* ============================= */
 /* CARTA                         */
 /* ============================= */
-
 
 const text=
 'Esta é uma carta provisória. Quando você me enviar a carta verdadeira, ela será substituída por completo com efeito de digitação.';
@@ -382,7 +353,6 @@ type();
 /* ============================= */
 /* CORAÇÕES                      */
 /* ============================= */
-
 
 /* Corações naturais ao abrir */
 
