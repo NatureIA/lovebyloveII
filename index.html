@@ -19,13 +19,14 @@
       </button>
     </div>
 
-    <!-- ÁUDIO LOCAL -->
-    <div class="audio-player">
-      <audio id="audio" controls autoplay loop>
-        <source src="assets/musica/musica.mp3" type="audio/mpeg" />
-      </audio>
-    </div>
+    <!-- Botão Nossa Música -->
+    <button id="play" type="button">▶ Nossa Música</button>
     <div id="musicLabel" class="music-label">🎵 Sunshine - Delacruz</div>
+
+    <!-- Áudio local (escondido, sem controles) -->
+    <audio id="audio" loop preload="auto">
+      <source src="assets/musica/musica.mp3" type="audio/mpeg" />
+    </audio>
   </section>
 
   <section class="counter">
