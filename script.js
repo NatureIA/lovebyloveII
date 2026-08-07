@@ -64,55 +64,96 @@ function explodeHearts(x, y, amount = 90) {
   }
 }
 
-// ========== MÚSICA ==========
+// ========== MÚSICA - VERSÃO COM DIAGNÓSTICO ==========
 let musicaIniciada = false;
+let audioLoaded = false;
 
-async function iniciarMusica() {
-  if (musicaIniciada) {
-    console.log('Música já está tocando.');
-    return;
-  }
-
-  try {
-    console.log('Tentando tocar música...');
-    audio.muted = false;
-    audio.volume = 1.0;
-    await audio.play();
-    musicaIniciada = true;
-    play.textContent = '♫ Música Tocando';
-    musicLabel.textContent = 'Dunshine - Delacruz • tocando';
-    console.log('Música tocando com sucesso!');
-  } catch (error) {
-    musicaIniciada = false;
-    console.error('ERRO AO REPRODUZIR ÁUDIO:', error);
-    play.textContent = '▶ Tocar Música';
-    musicLabel.textContent = `Erro: ${error.name} - ${error.message}`;
-    // Fallback: tenta novamente com um clique
-    alert('Clique novamente para tentar tocar a música.');
-  }
-}
-
-// Evento de erro do áudio
-audio.addEventListener('error', (e) => {
-  musicaIniciada = false;
-  console.error('ERRO NO ELEMENTO ÁUDIO:', audio.error);
-  play.textContent = '▶ Tocar Música';
-  if (audio.error) {
-    musicLabel.textContent = `Erro do áudio: código ${audio.error.code}`;
-  } else {
-    musicLabel.textContent = 'Erro ao carregar a música';
-  }
+// Verifica se o áudio pode ser reproduzido
+audio.addEventListener('canplaythrough', () => {
+  console.log('✅ Áudio carregado e pronto para tocar.');
+  audioLoaded = true;
 });
 
-// Quando a música começar a tocar
+// Captura erros de rede
+audio.addEventListener('error', (e) => {
+  console.error('❌ ERRO NO ELEMENTO ÁUDIO:', audio.error);
+  let msg = '';
+  if (audio.error) {
+    switch (audio.error.code) {
+      case 1: msg = 'Carregamento abortado'; break;
+      case 2: msg = 'Erro de rede (arquivo não encontrado?)'; break;
+      case 3: msg = 'Erro de decodificação (formato não suportado)'; break;
+      case 4: msg = 'Arquivo não encontrado (404)'; break;
+      default: msg = `Código ${audio.error.code}`;
+    }
+  }
+  musicLabel.textContent = `Erro: ${msg}`;
+  alert(`❌ Erro no áudio: ${msg}\nVerifique o console para mais detalhes.`);
+  play.textContent = '▶ Tocar Música';
+});
+
+// Mostra quando a música começa a tocar
 audio.addEventListener('playing', () => {
+  console.log('🎵 Música está tocando!');
   musicaIniciada = true;
   play.textContent = '♫ Música Tocando';
   musicLabel.textContent = 'Dunshine - Delacruz • tocando';
-  console.log('Evento "playing" disparado.');
 });
 
-// ========== CORAÇÃO CENTRAL ==========
+// Função principal para iniciar a música
+async function iniciarMusica() {
+  console.log('🔄 iniciarMusica() chamada.');
+  if (musicaIniciada) {
+    console.log('ℹ️ Música já está tocando.');
+    return;
+  }
+
+  // Verifica se o arquivo existe via fetch (diagnóstico)
+  try {
+    const response = await fetch('assets/musica/musica.mp3', { method: 'HEAD' });
+    if (!response.ok) {
+      console.error(`❌ Arquivo não encontrado (status ${response.status})`);
+      musicLabel.textContent = `Erro: arquivo não encontrado (${response.status})`;
+      alert(`❌ O arquivo musica.mp3 não foi encontrado no servidor.\nStatus: ${response.status}\nVerifique se o arquivo está em assets/musica/.`);
+      return;
+    } else {
+      console.log('✅ Arquivo existe (status 200). Tamanho:', response.headers.get('content-length'));
+    }
+  } catch (fetchError) {
+    console.error('❌ Erro ao verificar arquivo:', fetchError);
+    musicLabel.textContent = 'Erro ao verificar o arquivo';
+    alert('❌ Não foi possível verificar a existência do arquivo. Veja o console.');
+    return;
+  }
+
+  // Tenta reproduzir
+  try {
+    console.log('⏳ Tentando reproduzir áudio...');
+    audio.muted = false;
+    audio.volume = 1.0;
+    await audio.play();
+    console.log('✅ Reprodução iniciada com sucesso.');
+    musicaIniciada = true;
+    play.textContent = '♫ Música Tocando';
+    musicLabel.textContent = 'Dunshine - Delacruz • tocando';
+  } catch (playError) {
+    console.error('❌ Erro ao tentar play():', playError);
+    musicLabel.textContent = `Erro: ${playError.name} - ${playError.message}`;
+    alert(`❌ Falha ao tocar: ${playError.message}\nTente novamente ou verifique o console.`);
+    // Fallback: tenta recarregar o áudio
+    audio.load();
+    setTimeout(() => {
+      console.log('🔄 Tentando novamente após recarregar...');
+      audio.play().then(() => {
+        musicaIniciada = true;
+        play.textContent = '♫ Música Tocando';
+        musicLabel.textContent = 'Dunshine - Delacruz • tocando';
+      }).catch(e => console.error('❌ Nova tentativa falhou:', e));
+    }, 1000);
+  }
+}
+
+// ========== EVENTOS DOS BOTÕES ==========
 centralHeart.addEventListener('click', (event) => {
   const rect = centralHeart.getBoundingClientRect();
   const x = event.clientX || rect.left + rect.width / 2;
@@ -126,20 +167,18 @@ centralHeart.addEventListener('click', (event) => {
   iniciarMusica();
 });
 
-// ========== BOTÃO PLAY ==========
 play.addEventListener('click', (event) => {
   event.preventDefault();
   event.stopPropagation();
   iniciarMusica();
 });
 
-// ========== GALERIA DE FOTOS (COM VERIFICAÇÃO) ==========
+// ========== GALERIA DE FOTOS ==========
 const numFotos = 18;
 const imgs = Array.from({ length: numFotos }, (_, i) =>
   `assets/imagens/foto${String(i + 1).padStart(2, '0')}.png`
 );
 
-// Testa se a primeira imagem carrega
 function testarImagem(url) {
   return new Promise((resolve) => {
     const img = new Image();
@@ -149,7 +188,6 @@ function testarImagem(url) {
   });
 }
 
-// Função para carregar a primeira imagem disponível
 async function carregarPrimeiraImagem() {
   for (let i = 0; i < imgs.length; i++) {
     const url = imgs[i];
@@ -163,7 +201,6 @@ async function carregarPrimeiraImagem() {
       console.warn(`Falha ao carregar: ${url}`);
     }
   }
-  // Se nenhuma carregar, usa placeholder
   slide.src = 'https://placehold.co/900x600/png?text=Fotos+n%C3%A3o+encontradas';
   fotoStatus.textContent = 'Nenhuma foto encontrada em assets/imagens/';
   console.error('Nenhuma imagem foi carregada.');
@@ -171,16 +208,11 @@ async function carregarPrimeiraImagem() {
 }
 
 let currentIndex = 0;
-
-// Inicia com a primeira imagem disponível
 carregarPrimeiraImagem().then((idx) => {
   if (idx >= 0) {
     currentIndex = idx;
-    // Rotaciona as imagens a partir da primeira encontrada
     setInterval(() => {
-      // Procura a próxima imagem válida
       let next = (currentIndex + 1) % imgs.length;
-      // Tenta carregar a próxima (se falhar, pula)
       const tentar = async () => {
         for (let i = 0; i < imgs.length; i++) {
           const index = (next + i) % imgs.length;
@@ -193,17 +225,15 @@ carregarPrimeiraImagem().then((idx) => {
             return;
           }
         }
-        // Se nenhuma funcionar, mantém a atual
       };
       tentar();
     }, 4000);
   }
 });
 
-// ========== CARTA COM EFEITO DE DIGITAÇÃO ==========
+// ========== CARTA ==========
 const text = 'Esta é uma carta provisória. Quando você me enviar a carta verdadeira, ela será substituída por completo com efeito de digitação.';
 let pos = 0;
-
 function type() {
   if (pos < text.length) {
     typed.textContent += text[pos++];
@@ -212,7 +242,7 @@ function type() {
 }
 type();
 
-// ========== INICIALIZAÇÃO DOS CORAÇÕES ==========
+// ========== CORAÇÕES INICIAIS ==========
 for (let n = 0; n < 28; n++) {
   setTimeout(() => createFloatingHeart(true), n * 55);
 }
