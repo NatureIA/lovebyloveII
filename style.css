@@ -317,3 +317,13 @@ h1 {
 }
 
 
+/* ===== HISTÓRIA COM FONTE MANUSCRITA ===== */
+.timeline .card {
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.4rem;
+  line-height: 1.8;
+  text-align: left;
+}
+
+
+
