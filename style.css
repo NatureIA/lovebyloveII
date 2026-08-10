@@ -35,3 +35,13 @@ button{padding:14px 28px;border:none;border-radius:40px;background:#ff4d88;color
   white-space: pre-line;
 }
 
+#typed {
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.6rem;
+  line-height: 1.8;
+  white-space: pre-line;
+  direction: rtl; /* Faz a escrita começar da direita */
+  text-align: right; /* Alinha o texto à direita */
+}
+
+
