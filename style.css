@@ -45,3 +45,9 @@ section.letter {
   max-width: 90%;
   word-wrap: break-word;
 }
+
+.timeline .card {
+  text-align: left;
+}
+
+
