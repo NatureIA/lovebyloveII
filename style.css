@@ -36,12 +36,13 @@ button{padding:14px 28px;border:none;border-radius:40px;background:#ff4d88;color
 }
 
 #typed {
+  display: inline-block;      /* Faz o bloco se ajustar ao conteúdo */
+  direction: rtl;            /* A escrita cresce da direita para esquerda */
+  text-align: right;         /* Alinha o texto à direita dentro do bloco */
   font-family: 'Dancing Script', cursive;
   font-size: 1.6rem;
   line-height: 1.8;
   white-space: pre-line;
-  direction: rtl;           /* Escreve da direita para a esquerda */
-  text-align: right;        /* Alinha o texto à direita */
 }
 
 
