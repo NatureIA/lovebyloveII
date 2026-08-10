@@ -126,3 +126,194 @@ section.letter {
   padding: 20px 0;
 }
 
+
+/* ============================================================
+   MELHORIAS VISUAIS (ROMÂNTICAS) + AJUSTES PARA CELULAR
+   ============================================================ */
+
+/* ---- 1. Fundo com brilho e camadas ---- */
+body {
+  background: radial-gradient(ellipse at center top, #ffe2ec 0%, #ffb6d5 40%, #ff8faf 100%);
+  min-height: 100vh;
+}
+
+/* ---- 2. Títulos com fonte manuscrita ---- */
+h2, h3, h4 {
+  font-family: 'Dancing Script', cursive;
+  color: #5e2e4a;
+  letter-spacing: 1px;
+}
+
+/* ---- 3. Título principal com destaque ---- */
+h1 {
+  font-family: 'Dancing Script', cursive;
+  font-size: 4rem;
+  color: #5e2e4a;
+  text-shadow: 0 4px 20px rgba(255, 77, 136, 0.2);
+  letter-spacing: 2px;
+}
+
+/* ---- 4. Cards com efeito de elevação e vidro ---- */
+.card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(4px);
+  box-shadow: 0 8px 30px rgba(150, 50, 80, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 20px;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(150, 50, 80, 0.25);
+}
+
+/* ---- 5. Coração central com brilho pulsante ---- */
+.central-heart {
+  animation: centralHeartBeat 1.08s ease-in-out infinite, glowPulse 2s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(255, 77, 136, 0.3); }
+  50% { box-shadow: 0 0 40px rgba(255, 77, 136, 0.6), 0 0 80px rgba(255, 77, 136, 0.2); }
+}
+
+/* ---- 6. Fotos com moldura e sombra ---- */
+.gallery img {
+  border: 4px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 8px 30px rgba(200, 50, 100, 0.2);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.gallery img:hover {
+  transform: scale(1.02);
+  box-shadow: 0 12px 40px rgba(200, 50, 100, 0.35);
+}
+
+/* ---- 7. Carta com textura de papel ---- */
+.carta-papel {
+  background: #fefaf5;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12), inset 0 0 60px rgba(200, 160, 130, 0.05);
+  border: 1px solid #eeddcc;
+}
+
+/* ---- 8. Separador com coração entre seções ---- */
+.section-divider {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin: 20px auto;
+  font-size: 1.8rem;
+  color: #ff4d88;
+}
+
+.section-divider::before,
+.section-divider::after {
+  content: '';
+  flex: 1;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #ff4d88, transparent);
+  max-width: 100px;
+}
+
+/* ---- 9. Ajustes específicos para CELULAR ---- */
+@media (max-width: 768px) {
+
+  body {
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    padding: 0 15px;
+  }
+
+  h2 {
+    font-size: 1.4rem;
+  }
+
+  h3 {
+    font-size: 1.3rem;
+  }
+
+  button {
+    padding: 16px 32px;
+    font-size: 1.1rem;
+    min-height: 54px;
+    border-radius: 50px;
+    touch-action: manipulation;
+  }
+
+  .central-heart {
+    width: 120px;
+    height: 120px;
+    min-width: 120px;
+    min-height: 120px;
+  }
+
+  .central-heart span {
+    font-size: 64px;
+  }
+
+  .card {
+    padding: 24px 20px;
+    margin: 20px 12px;
+    border-radius: 20px;
+  }
+
+  .gallery img {
+    width: 100%;
+    max-width: 100%;
+    border-radius: 16px;
+  }
+
+  .carta-papel {
+    padding: 30px 20px;
+    max-width: 95%;
+    border-radius: 12px;
+  }
+
+  .carta-selo {
+    width: 50px;
+    height: 50px;
+    font-size: 1.6rem;
+    top: -12px;
+    right: 20px;
+  }
+
+  #typed {
+    font-size: 1.3rem;
+    line-height: 1.7;
+  }
+
+  #timer {
+    font-size: 1.8rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+  }
+
+  section {
+    padding: 40px 16px;
+  }
+
+  .audio-player {
+    max-width: 100%;
+    padding: 0 10px;
+  }
+
+  .audio-player audio {
+    width: 100%;
+    height: 50px;
+  }
+
+  .heart {
+    font-size: 16px !important;
+  }
+
+  #instrucaoCarta {
+    font-size: 1rem !important;
+  }
+}
+
+
