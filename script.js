@@ -170,7 +170,22 @@ carregarPrimeiraImagem().then((idx) => {
 });
 
 // ========== CARTA ==========
-const text = 'Esta é uma carta provisória. Quando você me enviar a carta verdadeira, ela será substituída por completo com efeito de digitação.';
+const text = const text = `Meu amor, tentando ser breve, eu só queria que você soubesse o quanto eu te amo e o quanto você é importante para mim.
+
+Desde que eu te conheci, de alguma forma, eu já sabia que era você. Que era com você que eu queria estar, com quem eu queria ficar, com quem eu quero casar e passar o resto da minha vida. Não é à toa que, desde o começo, eu já queria gritar para o mundo que você estava comigo, né? Hahaha.
+
+Você chegou e, como eu te disse naquela primeira vez que subimos o Morro da Cruz: "Você trouxe movimento pra minha vida, você deu vida pra minha vida." E não é à toa que é filha de Yansã, né? Meu vendavalzinho!
+
+Obrigado por tornar a minha vida imensuravelmente melhor, de uma forma que eu nem consigo colocar em palavras, ou como diz você, de forma "inenarrável". Obrigado por ser quem você é, por tudo o que trouxe para a minha vida e por tudo o que construímos nesses dois meses.
+
+Eu sei que não sou perfeito, mas, à minha maneira e sempre tentando dar o meu melhor, eu te amo muito. E espero conseguir fazer por você, todos os dias, pelo menos um pouco do bem que você faz por mim.
+
+Novamente, obrigado por esses dois meses juntos, por todo o movimento, por todos os momentos e, principalmente, por toda a alegria que você trouxe para a minha vida.
+
+Eu te amo muito! ❤️
+
+Você é o amor da minha vida! ❤️`;
+
 let pos = 0;
 function type() {
   if (pos < text.length) {
