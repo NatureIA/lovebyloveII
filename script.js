@@ -9,7 +9,7 @@ const centralHeart = document.getElementById('centralHeart');
 const musicLabel = document.getElementById('musicLabel');
 const fotoStatus = document.getElementById('fotoStatus');
 
-// ========== TIMER ===========
+// ========== TIMER ============
 function tick() {
   const now = new Date();
   let diff = now - start;
