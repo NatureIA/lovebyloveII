@@ -36,18 +36,19 @@ button{padding:14px 28px;border:none;border-radius:40px;background:#ff4d88;color
 }
 
 #typed {
-  display: inline-block;      /* Permite centralização pelo pai */
-  direction: rtl;            /* A escrita cresce da direita para esquerda */
-  text-align: right;         /* Alinha o texto à direita dentro do bloco */
+  display: inline-block;
+  white-space: nowrap;        /* Impede quebra de linha */
+  overflow: hidden;           /* Esconde o excesso durante a digitação */
+  text-align: left;           /* Alinha o texto à esquerda */
   font-family: 'Dancing Script', cursive;
   font-size: 1.6rem;
   line-height: 1.8;
-  white-space: pre-line;      /* Mantém quebras de linha */
 }
 
-/* Garante que o container pai (section.letter) centralize o conteúdo */
+/* Garante que o container pai (section.letter) alinhe o texto à esquerda */
 section.letter {
-  text-align: center;
+  text-align: left;
+  padding-left: 20px;         /* Margem na esquerda para não colar na borda (ajuste) */
 }
 
 
