@@ -27,3 +27,8 @@ button{padding:14px 28px;border:none;border-radius:40px;background:#ff4d88;color
 #fotoStatus {
   display: none;
 }
+
+#typed {
+  white-space: pre-line;
+}
+
