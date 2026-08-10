@@ -170,7 +170,7 @@ carregarPrimeiraImagem().then((idx) => {
 });
 
 // ========== CARTA ==========
-const text = const text = `Meu amor, tentando ser breve, eu só queria que você soubesse o quanto eu te amo e o quanto você é importante para mim.
+const text = `Meu amor, tentando ser breve, eu só queria que você soubesse o quanto eu te amo e o quanto você é importante para mim.
 
 Desde que eu te conheci, de alguma forma, eu já sabia que era você. Que era com você que eu queria estar, com quem eu queria ficar, com quem eu quero casar e passar o resto da minha vida. Não é à toa que, desde o começo, eu já queria gritar para o mundo que você estava comigo, né? Hahaha.
 
