@@ -220,6 +220,8 @@ let cartaIniciada = false;
 document.getElementById('seloCarta').addEventListener('click', function() {
   if (!cartaIniciada) {
     cartaIniciada = true;
+    const instrucao = document.getElementById('instrucaoCarta');
+    if (instrucao) instrucao.style.display = 'none';
     type(); // inicia a digitação
     // Feedback visual: animação no selo
     this.style.transform = 'scale(0.9) rotate(5deg)';
