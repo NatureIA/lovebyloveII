@@ -45,7 +45,7 @@ button{padding:14px 28px;border:none;border-radius:40px;background:#ff4d88;color
   line-height: 1.8;
 }
 
-/* Garante que o container pai (section.letter) alinhe o texto à esquerda */
+/* Garante que o container pai (section.letter) alinhe o texto à esquerdaaaa */
 section.letter {
   text-align: left;
   padding-left: 20px;         /* Margem na esquerda para não colar na borda (ajuste) */
