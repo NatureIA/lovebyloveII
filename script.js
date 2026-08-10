@@ -195,7 +195,7 @@ function type() {
     setTimeout(type, delay);
   }
 }
-type();
+
 
 // ========== CORAÇÕES INICIAIS ==========
 for (let n = 0; n < 28; n++) {
@@ -212,4 +212,19 @@ window.addEventListener('load', () => {
       55
     );
   }, 500);
+});
+
+// ========== INICIAR CARTA AO CLICAR NO SELO ==========
+let cartaIniciada = false;
+
+document.getElementById('seloCarta').addEventListener('click', function() {
+  if (!cartaIniciada) {
+    cartaIniciada = true;
+    type(); // inicia a digitação
+    // Feedback visual: animação no selo
+    this.style.transform = 'scale(0.9) rotate(5deg)';
+    setTimeout(() => {
+      this.style.transform = 'scale(1) rotate(8deg)';
+    }, 200);
+  }
 });
