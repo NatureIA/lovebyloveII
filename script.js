@@ -187,10 +187,12 @@ Eu te amo muito! ❤️
 Você é o amor da minha vida! ❤️`;
 
 let pos = 0;
+
 function type() {
   if (pos < text.length) {
     typed.textContent += text[pos++];
-    setTimeout(type, 35);
+    const delay = 20 + Math.random() * 60; // entre 20ms e 80ms
+    setTimeout(type, delay);
   }
 }
 type();
